@@ -89,11 +89,11 @@ Please make your guess 🤖: 1234
 
 ['❌', '❌', '✅', '❌']
 
-Please make your guess 🤖: 4312
+Please make your guess 🤖: 4132
 
 ['✅', '✅', '✅', '✅']
 
-Well played John 🤖, you successfully guessed the number : 4312 !! 🥂
+Well played John 🤖, you successfully guessed the number : 4132 !! 🥂
 
 I'll train myself on your game to give you a harder number to guess next time.
 
