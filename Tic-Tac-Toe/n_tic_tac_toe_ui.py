@@ -39,16 +39,26 @@ board = np.zeros((BOARD_ROWS, BOARD_COLS))
 game_mode = None  # 'human' or 'computer'
 player = 1  # Current player (1 for circle, 2 for cross)
 
+
 # Functions
 def draw_lines():
     """Draws the grid lines on the board."""
     # Horizontal lines
-    pygame.draw.line(screen, LINE_COLOR, (0, HEIGHT // 3), (WIDTH, HEIGHT // 3), LINE_WIDTH)
-    pygame.draw.line(screen, LINE_COLOR, (0, 2 * HEIGHT // 3), (WIDTH, 2 * HEIGHT // 3), LINE_WIDTH)
+    pygame.draw.line(
+        screen, LINE_COLOR, (0, HEIGHT // 3), (WIDTH, HEIGHT // 3), LINE_WIDTH
+    )
+    pygame.draw.line(
+        screen, LINE_COLOR, (0, 2 * HEIGHT // 3), (WIDTH, 2 * HEIGHT // 3), LINE_WIDTH
+    )
 
     # Vertical lines
-    pygame.draw.line(screen, LINE_COLOR, (WIDTH // 3, 0), (WIDTH // 3, HEIGHT), LINE_WIDTH)
-    pygame.draw.line(screen, LINE_COLOR, (2 * WIDTH // 3, 0), (2 * WIDTH // 3, HEIGHT), LINE_WIDTH)
+    pygame.draw.line(
+        screen, LINE_COLOR, (WIDTH // 3, 0), (WIDTH // 3, HEIGHT), LINE_WIDTH
+    )
+    pygame.draw.line(
+        screen, LINE_COLOR, (2 * WIDTH // 3, 0), (2 * WIDTH // 3, HEIGHT), LINE_WIDTH
+    )
+
 
 def draw_figures():
     """Draws Xs and Os on the board based on the board state."""
@@ -59,7 +69,10 @@ def draw_figures():
                 pygame.draw.circle(
                     screen,
                     CIRCLE_COLOR,
-                    (int(col * WIDTH // 3 + WIDTH // 6), int(row * HEIGHT // 3 + HEIGHT // 6)),
+                    (
+                        int(col * WIDTH // 3 + WIDTH // 6),
+                        int(row * HEIGHT // 3 + HEIGHT // 6),
+                    ),
                     CIRCLE_RADIUS,
                     CIRCLE_WIDTH,
                 )
@@ -69,7 +82,10 @@ def draw_figures():
                     screen,
                     CROSS_COLOR,
                     (col * WIDTH // 3 + SPACE, row * HEIGHT // 3 + SPACE),
-                    (col * WIDTH // 3 + WIDTH // 3 - SPACE, row * HEIGHT // 3 + HEIGHT // 3 - SPACE),
+                    (
+                        col * WIDTH // 3 + WIDTH // 3 - SPACE,
+                        row * HEIGHT // 3 + HEIGHT // 3 - SPACE,
+                    ),
                     CROSS_WIDTH,
                 )
                 pygame.draw.line(
@@ -79,6 +95,7 @@ def draw_figures():
                     (col * WIDTH // 3 + WIDTH // 3 - SPACE, row * HEIGHT // 3 + SPACE),
                     CROSS_WIDTH,
                 )
+
 
 def draw_buttons():
     """Draws buttons for selecting the game mode."""
@@ -102,27 +119,38 @@ def mark_square(row, col, player):
     """Marks a square with the player's move."""
     board[row][col] = player
 
+
 def available_square(row, col):
     """Checks if a square is available."""
     return board[row][col] == 0
+
 
 def is_board_full():
     """Checks if the board is full."""
     return not np.any(board == 0)
 
+
 def check_win(player, draw_winning_line=True):
     """Checks if the given player has won the game."""
     # Vertical win
     for col in range(BOARD_COLS):
-        if board[0][col] == player and board[1][col] == player and board[2][col] == player:
+        if (
+            board[0][col] == player
+            and board[1][col] == player
+            and board[2][col] == player
+        ):
             if draw_winning_line:
                 draw_vertical_winning_line(col, player)
             return True
 
     # Horizontal win
     for row in range(BOARD_ROWS):
-        if board[row][0] == player and board[row][1] == player and board[row][2] == player:
-            if draw_winning_line:    
+        if (
+            board[row][0] == player
+            and board[row][1] == player
+            and board[row][2] == player
+        ):
+            if draw_winning_line:
                 draw_horizontal_winning_line(row, player)
             return True
 
@@ -140,11 +168,13 @@ def check_win(player, draw_winning_line=True):
 
     return False
 
+
 def draw_vertical_winning_line(col, player):
     """Draws a vertical line for the winning move."""
     posX = col * WIDTH // 3 + WIDTH // 6
     color = CIRCLE_COLOR if player == 1 else CROSS_COLOR
     pygame.draw.line(screen, color, (posX, 15), (posX, HEIGHT - 15), LINE_WIDTH)
+
 
 def draw_horizontal_winning_line(row, player):
     """Draws a horizontal line for the winning move."""
@@ -152,15 +182,18 @@ def draw_horizontal_winning_line(row, player):
     color = CIRCLE_COLOR if player == 1 else CROSS_COLOR
     pygame.draw.line(screen, color, (15, posY), (WIDTH - 15, posY), LINE_WIDTH)
 
+
 def draw_ascending_diagonal(player):
     """Draws a diagonal line from bottom-left to top-right for the winning move."""
     color = CIRCLE_COLOR if player == 1 else CROSS_COLOR
     pygame.draw.line(screen, color, (15, HEIGHT - 15), (WIDTH - 15, 15), LINE_WIDTH)
 
+
 def draw_descending_diagonal(player):
     """Draws a diagonal line from top-left to bottom-right for the winning move."""
     color = CIRCLE_COLOR if player == 1 else CROSS_COLOR
     pygame.draw.line(screen, color, (15, 15), (WIDTH - 15, HEIGHT - 15), LINE_WIDTH)
+
 
 def restart():
     """Restarts the game by resetting the board."""
@@ -171,6 +204,7 @@ def restart():
         for col in range(BOARD_COLS):
             board[row][col] = 0
     player = 1
+
 
 def computer_move(player):
     """
@@ -196,7 +230,7 @@ def computer_move(player):
     if blocking_fork_move:
         row, col = blocking_fork_move
         return (row, col)
-        
+
     # Step 4: Try to create a fork
     fork_move = find_fork_move(board, player)
     if fork_move:
@@ -208,6 +242,7 @@ def computer_move(player):
     if strategic_move:
         row, col = strategic_move
         return (row, col)
+
 
 def find_winning_move(board, player):
     """Finds a winning move for the computer player."""
@@ -221,6 +256,7 @@ def find_winning_move(board, player):
                 board[row][col] = 0
     return None
 
+
 def find_blocking_move(board, player):
     """Finds a move that blocks the opponent from winning."""
     for row in range(BOARD_ROWS):
@@ -232,6 +268,7 @@ def find_blocking_move(board, player):
                     return (row, col)
                 board[row][col] = 0
 
+
 def check_fork(player):
     """Checks if placing a mark creates a fork for the player."""
     fork_count = 0
@@ -241,13 +278,18 @@ def check_fork(player):
         for col in range(BOARD_COLS):
             if board[row][col] == 0:  # If the square is empty
                 board[row][col] = player  # Simulate the move
-                winning_lines = count_winning_lines(board, player)  # Count possible wins
-                if winning_lines > 1:  # A fork occurs if two or more winning lines are created
+                winning_lines = count_winning_lines(
+                    board, player
+                )  # Count possible wins
+                if (
+                    winning_lines > 1
+                ):  # A fork occurs if two or more winning lines are created
                     fork_count += 1
                 board[row][col] = 0  # Undo the move
-    
-    return fork_count > 0 
-        
+
+    return fork_count > 0
+
+
 def count_winning_lines(board, player):
     """Counts the number of potential winning lines for the player."""
     winning_lines = 0
@@ -262,13 +304,20 @@ def count_winning_lines(board, player):
     # Check diagonals
     main_diag = [board[i, i] for i in range(BOARD_ROWS)]
     anti_diag = [board[i, BOARD_COLS - i - 1] for i in range(BOARD_ROWS)]
-    if np.sum(np.array(main_diag) == player) == 2 and np.sum(np.array(main_diag) == 0) == 1:
+    if (
+        np.sum(np.array(main_diag) == player) == 2
+        and np.sum(np.array(main_diag) == 0) == 1
+    ):
         winning_lines += 1
-    if np.sum(np.array(anti_diag) == player) == 2 and np.sum(np.array(anti_diag) == 0) == 1:
+    if (
+        np.sum(np.array(anti_diag) == player) == 2
+        and np.sum(np.array(anti_diag) == 0) == 1
+    ):
         winning_lines += 1
 
     return winning_lines
-    
+
+
 def find_blocking_fork_move(board, player):
     """Finds a move that blocks the opponent's fork."""
     for row in range(BOARD_ROWS):
@@ -281,6 +330,7 @@ def find_blocking_fork_move(board, player):
                 board[row][col] = 0
     return None
 
+
 def find_fork_move(board, player):
     """Finds a move that creates a fork for the computer player."""
     for row in range(BOARD_ROWS):
@@ -292,6 +342,7 @@ def find_fork_move(board, player):
                     return (row, col)
                 board[row][col] = 0
     return None
+
 
 def find_best_move(board):
     """Finds the best move for the computer player."""
@@ -309,8 +360,10 @@ def find_best_move(board):
         if board[move[0]][move[1]] == 0:
             return move
 
+
 # Game loop
 draw_lines()
+
 
 def main():
     global player, running, game_mode
@@ -329,18 +382,18 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouseX, mouseY = event.pos
                     if human_button.collidepoint(mouseX, mouseY):
-                        game_mode = 'human'
+                        game_mode = "human"
                         selecting_mode = False
                         screen.fill(BG_COLOR)
                         draw_lines()
                     elif computer_button.collidepoint(mouseX, mouseY):
-                        game_mode = 'computer'
+                        game_mode = "computer"
                         selecting_mode = False
                         screen.fill(BG_COLOR)
                         draw_lines()
 
             elif not selecting_mode:
-                if game_mode == 'human':
+                if game_mode == "human":
                     if event.type == pygame.MOUSEBUTTONDOWN and not is_board_full():
                         mouseX = event.pos[0]  # X
                         mouseY = event.pos[1]  # Y
@@ -355,9 +408,13 @@ def main():
                             player = 3 - player  # Switch player
 
                         draw_figures()
-                
-                elif game_mode == 'computer':
-                    if player == 1 and event.type == pygame.MOUSEBUTTONDOWN and not is_board_full():
+
+                elif game_mode == "computer":
+                    if (
+                        player == 1
+                        and event.type == pygame.MOUSEBUTTONDOWN
+                        and not is_board_full()
+                    ):
                         mouseX = event.pos[0]  # X
                         mouseY = event.pos[1]  # Y
 
@@ -371,7 +428,7 @@ def main():
                             player = 3 - player  # Switch player
 
                         draw_figures()
-        
+
                     elif player == 2 and not is_board_full():
                         pygame.time.wait(500)  # Add a delay for realism
                         row, col = computer_move(player)

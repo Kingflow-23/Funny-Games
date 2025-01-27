@@ -1,10 +1,12 @@
 import random
-import numpy as np 
+import numpy as np
+
 
 class Player:
     """
     Defines the player characteristics and abilities.
     """
+
     def __init__(self, mark: str):
         self.name = input(f"🤖 : Please, {mark} player, enter your name : ")
         self.name = f"Player_{mark}" if not (self.name) else self.name
@@ -22,7 +24,9 @@ class Player:
             try:
                 print(f"🤖 : It's {self.name} turn.\n")
                 print(f"🤖 : Let's place '{self.mark}' !\n")
-                row = int(input(f"🤖 : {self.name}, enter the row (0-{board.size-1}): "))
+                row = int(
+                    input(f"🤖 : {self.name}, enter the row (0-{board.size-1}): ")
+                )
                 col = int(
                     input(f"🤖 : {self.name}, enter the column (0-{board.size-1}): ")
                 )
@@ -47,6 +51,7 @@ class ComputerPlayer(Player):
     """
     Defines the characteristics and abilities for a computer player.
     """
+
     def __init__(self, mark: str):
         self.name = input(f"🤖 : Please, enter a name for computer {mark} player : ")
         self.name = f"Computer_{mark}" if not (self.name) else self.name
@@ -269,6 +274,7 @@ class Board:
     """
     Defines the board characteristics.
     """
+
     def __init__(self):
         while True:
             try:
@@ -364,6 +370,7 @@ class Game:
     """
     Defines the game flow.
     """
+
     def __init__(self):
         self.game_opening()
         self.board = Board()
