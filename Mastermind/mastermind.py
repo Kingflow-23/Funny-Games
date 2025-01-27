@@ -168,9 +168,11 @@ def main_game(num_attempt=5):
                 num_attempt=num_attempt,
                 seq_to_guess=seq_to_guess,
             )
-            print(f"""
+            print(
+                f"""
                   You took {end_time - start_time:.2f} seconds.
-                  """)
+                  """
+            )
             break
 
         else:
@@ -183,9 +185,11 @@ def main_game(num_attempt=5):
                     num_attempt=num_attempt,
                     seq_to_guess=seq_to_guess,
                 )
-                print(f"""
+                print(
+                    f"""
                       You took {end_time - start_time:.2f} seconds.
-                      """)
+                      """
+                )
                 break
 
 

@@ -87,11 +87,15 @@ def guess(previous_guess: list, choices: list, seq_answer: list):
         for place, answer in enumerate(seq_answer):
             if answer == "✅":
                 player_guess[place] = previous_guess[place]
-                available_places.remove(place)              # Mark this place as filled
+                available_places.remove(place)  # Mark this place as filled
                 if player_guess[place] in choices:
-                    choices.remove(player_guess[place])   # Remove used digit from choices
+                    choices.remove(
+                        player_guess[place]
+                    )  # Remove used digit from choices
                 if player_guess[place] in num_misplaced:
-                    num_misplaced.remove(player_guess[place])    # Remove used digit from misplace digit list
+                    num_misplaced.remove(
+                        player_guess[place]
+                    )  # Remove used digit from misplace digit list
 
         # Debug statement to see choices after handling ✅
         # print(f"After handling '✅', choices: {choices}")
@@ -101,15 +105,21 @@ def guess(previous_guess: list, choices: list, seq_answer: list):
             if answer == "⛔":
                 num_misplaced.add(previous_guess[place])
 
-                temp_available_places = [i for i in available_places if i != place]  # Exclude the current place
+                temp_available_places = [
+                    i for i in available_places if i != place
+                ]  # Exclude the current place
 
                 if temp_available_places:
-                    new_place = random.choice(temp_available_places)    # Pick a new position
+                    new_place = random.choice(
+                        temp_available_places
+                    )  # Pick a new position
                     player_guess[new_place] = previous_guess[place]
-                    available_places.remove(new_place)                  # Mark the new place as filled
-                    
+                    available_places.remove(new_place)  # Mark the new place as filled
+
                 if previous_guess[place] in choices:
-                    choices.remove(previous_guess[place])               # Remove correct digit from choices
+                    choices.remove(
+                        previous_guess[place]
+                    )  # Remove correct digit from choices
 
         # Debug statement to see choices after handling ⛔
         # print(f"After handling '⛔', choices: {choices}")
@@ -121,24 +131,32 @@ def guess(previous_guess: list, choices: list, seq_answer: list):
 
         # Debug statement to see final choices after ❌ handling
         # print(f"After handling '❌', choices: {choices}")
-        
+
         # Step 4: Fill remaining empty spots with random choices
         for place in available_places:
             if player_guess[place] == "":  # If still empty
                 if not choices:  # Check if choices is empty
                     if num_misplaced:  # If num_misplaced has values, use them
                         # Filter num_misplaced to avoid those already in player_guess
-                        valid_misplaced = [digit for digit in num_misplaced if digit not in player_guess]
-                        
+                        valid_misplaced = [
+                            digit
+                            for digit in num_misplaced
+                            if digit not in player_guess
+                        ]
+
                         if valid_misplaced:
                             choices = valid_misplaced  # Use the valid misplaced digits
                         else:
                             # If no valid misplaced digits, fill with remaining digits
-                            remaining_digits = [str(i) for i in range(10) if str(i) not in player_guess]
+                            remaining_digits = [
+                                str(i) for i in range(10) if str(i) not in player_guess
+                            ]
                             choices = remaining_digits
                     else:
                         # If no valid misplaced digits, fill with remaining digits
-                        remaining_digits = [str(i) for i in range(10) if str(i) not in player_guess]
+                        remaining_digits = [
+                            str(i) for i in range(10) if str(i) not in player_guess
+                        ]
                         choices = remaining_digits
 
                 # Ensure choices is not empty before trying to select a new digit
@@ -282,9 +300,11 @@ def main_game(num_attempt=-1):
                 num_attempt=cpt_attempts,
                 seq_to_guess=seq_to_guess,
             )
-            print(f"""
+            print(
+                f"""
                   You took {end_time - start_time:.2f} seconds.
-                  """)
+                  """
+            )
             return cpt_attempts
 
         else:
@@ -299,16 +319,18 @@ def main_game(num_attempt=-1):
                     num_attempt=num_attempt,
                     seq_to_guess=seq_to_guess,
                 )
-                print(f"""
+                print(
+                    f"""
                       You took {end_time - start_time:.2f} seconds.
-                      """)
-        
+                      """
+                )
+
                 return cpt_attempts
 
         # time.sleep(0.3)
 
 
-def plot_result(attempts, filename='auto_mastermind_result.png'):
+def plot_result(attempts, filename="auto_mastermind_result.png"):
     """
     Plots the histogram of the number of attempts taken to guess the correct number.
 
@@ -316,42 +338,57 @@ def plot_result(attempts, filename='auto_mastermind_result.png'):
         attempts (list): A list of integers representing the number of attempts.
         filename (str): The name of the file to save the plot as an image.
     """
-    
+
     # Create a new figure with a specified size
     plt.figure(figsize=(14, 12))
-    
+
     # Create a histogram of attempts
-    plt.hist(attempts, bins=range(1, max(attempts)+2), align='left', color='skyblue', edgecolor='black')
-    
+    plt.hist(
+        attempts,
+        bins=range(1, max(attempts) + 2),
+        align="left",
+        color="skyblue",
+        edgecolor="black",
+    )
+
     # Set the title and labels
-    plt.title('Number of Attempts to Guess the Correct Number')
-    plt.xlabel('Number of Attempts')
-    plt.ylabel('Frequency')
-    
+    plt.title("Number of Attempts to Guess the Correct Number")
+    plt.xlabel("Number of Attempts")
+    plt.ylabel("Frequency")
+
     # Set x-ticks to show each attempt number
     plt.xticks(range(1, max(attempts) + 1))
-    
+
     # Add grid lines for better readability
-    plt.grid(axis='y', alpha=0.75)
+    plt.grid(axis="y", alpha=0.75)
 
     # Annotate the plot with the mean and median attempts
     mean_attempts = np.mean(attempts)
     median_attempts = np.median(attempts)
 
-    plt.text(0.5, 0.95, f'Mean Attempts: {mean_attempts:.2f}', 
-            transform=plt.gca().transAxes, 
-            horizontalalignment='center', 
-            verticalalignment='top')
+    plt.text(
+        0.5,
+        0.95,
+        f"Mean Attempts: {mean_attempts:.2f}",
+        transform=plt.gca().transAxes,
+        horizontalalignment="center",
+        verticalalignment="top",
+    )
 
-    plt.text(0.5, 0.90, f'Median Attempts: {median_attempts:.2f}', 
-            transform=plt.gca().transAxes, 
-            horizontalalignment='center', 
-            verticalalignment='top')
-    
+    plt.text(
+        0.5,
+        0.90,
+        f"Median Attempts: {median_attempts:.2f}",
+        transform=plt.gca().transAxes,
+        horizontalalignment="center",
+        verticalalignment="top",
+    )
+
     # Save the plot to a file
-    plt.savefig(filename, format='png')
+    plt.savefig(filename, format="png")
 
     plt.close()
+
 
 if __name__ == "__main__":
     # main_game()
@@ -363,6 +400,6 @@ if __name__ == "__main__":
 
     for _ in range(num_rounds):
         num_attempts = main_game(num_attempt=-1)
-        all_attempts.append(num_attempts) 
+        all_attempts.append(num_attempts)
 
-    plot_result(all_attempts, filename=f'auto_mastermind_result_{formatted_time}.png')
+    plot_result(all_attempts, filename=f"auto_mastermind_result_{formatted_time}.png")

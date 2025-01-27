@@ -388,7 +388,7 @@ class Game:
             True: If the board is full else False.
         """
         return len(self.board.available_moves) == 0 or len(self.winning_conditions) == 0
-    
+
     def restart_game(self):
         """
         Ask the players if they want to restart the game.

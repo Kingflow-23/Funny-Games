@@ -8,7 +8,7 @@ pygame.init()
 width = 600
 height = 400
 game_window = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Snake Game')
+pygame.display.set_caption("Snake Game")
 
 # Define colors
 black = (0, 0, 0)
@@ -22,6 +22,7 @@ clock = pygame.time.Clock()
 font_style = pygame.font.SysFont("bahnschrift", 25)
 score_font = pygame.font.SysFont("comicsansms", 35)
 
+
 def Your_score(score):
     """
     Display the current score on the screen.
@@ -31,6 +32,7 @@ def Your_score(score):
     """
     value = score_font.render("Score: " + str(score), True, black)
     game_window.blit(value, [0, 0])
+
 
 def our_snake(snake_block, snake_List):
     """
@@ -43,6 +45,7 @@ def our_snake(snake_block, snake_List):
     for x in snake_List:
         pygame.draw.rect(game_window, green, [x[0], x[1], snake_block, snake_block])
 
+
 def message(msg, color):
     """
     Display a message on the screen.
@@ -53,6 +56,7 @@ def message(msg, color):
     """
     mesg = font_style.render(msg, True, color)
     game_window.blit(mesg, [width / 8, height / 3])
+
 
 def gameLoop():
     """
@@ -85,7 +89,7 @@ def gameLoop():
             Your_score(Length_of_snake - 1)
             pygame.display.update()
 
-            for event in pygame.event.get():   
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     game_over = True
                     game_close = False
@@ -151,6 +155,7 @@ def gameLoop():
         clock.tick(snake_speed)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     gameLoop()

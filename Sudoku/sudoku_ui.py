@@ -118,7 +118,9 @@ def is_valid(board, row, col, num):
     start_row, start_col = 3 * (row // 3), 3 * (col // 3)
     for i in range(3):
         for j in range(3):
-            if board[start_row + i][start_col + j] == num and (start_row + i != row and start_col + j != col):
+            if board[start_row + i][start_col + j] == num and (
+                start_row + i != row and start_col + j != col
+            ):
                 return False
     return True
 
@@ -174,12 +176,14 @@ def remove_numbers():
     for r, c in cells[:num_cells_to_remove]:
         board[r][c] = 0
 
+
 def reset_board():
     """
     Resets the current board to the initial state.
     """
     global board
     board = copy.deepcopy(initial_board)
+
 
 def reset_game():
     """
@@ -188,6 +192,7 @@ def reset_game():
     """
     global board
     board = [[0 for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+
 
 def is_board_full():
     """
@@ -198,14 +203,14 @@ def is_board_full():
         for col in range(GRID_SIZE):
             if board[row][col] == 0:
                 return False  # Not all cells are filled
-            
-    return True 
+
+    return True
 
 
 def there_is_invalid_input():
     """
     Checks if there is any invalid input on the board. An input is considered invalid if:
-    
+
     1. There are duplicates in the same row.
     2. There are duplicates in the same column.
     3. There are duplicates in the same 3x3 sub-grid.
@@ -218,7 +223,7 @@ def there_is_invalid_input():
                 if not is_valid(board, row, col, num):
                     return True  # Invalid board (duplicate detected)
 
-    return False   # The board is valid, no duplicates
+    return False  # The board is valid, no duplicates
 
 
 def draw_victory_message():
@@ -231,15 +236,15 @@ def draw_victory_message():
     text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
     screen.blit(text, text_rect)
 
+
 def draw_invalid_message():
     """
     Draws an invalid message on the screen when the game is completed unsuccessfully.
     """
-    text = INVALID_FONT.render(
-        "Invalid inputs! Please try again.", True, (255, 0, 0)
-    )
+    text = INVALID_FONT.render("Invalid inputs! Please try again.", True, (255, 0, 0))
     text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
     screen.blit(text, text_rect)
+
 
 def main():
     """
@@ -260,7 +265,7 @@ def main():
     remove_numbers()
     initial_board = copy.deepcopy(board)
     current_board = copy.deepcopy(board)
-    
+
     while True:
         screen.fill(WHITE)
         draw_grid()
@@ -275,14 +280,14 @@ def main():
                 draw_invalid_message()
             else:
                 draw_victory_message()
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                
-                if event.type == pygame.KEYDOWN:   
-                # Reset the game if 'Enter' is pressed
+
+                if event.type == pygame.KEYDOWN:
+                    # Reset the game if 'Enter' is pressed
                     if event.key == pygame.K_RETURN:
                         reset_game()
                         generate_complete_board()
@@ -291,16 +296,16 @@ def main():
                         initial_board = copy.deepcopy(board)
                         current_board = copy.deepcopy(board)
                         selected_row, selected_col = 0, 0
-                        game_finished = False  
-                        
+                        game_finished = False
+
                     # Delete the user-inputted number (using BACKSPACE)
                     if event.key == pygame.K_BACKSPACE:
                         # Only delete the number if the cell is not pre-filled
                         if initial_board[selected_row][selected_col] == 0:
-                            board[selected_row][selected_col] = 0    
+                            board[selected_row][selected_col] = 0
                             current_board = copy.deepcopy(board)
-                            game_finished = False 
-                    
+                            game_finished = False
+
                     # Reset the board if 'r' is pressed
                     if event.key == pygame.K_r:
                         reset_board()
@@ -317,7 +322,10 @@ def main():
                 # Click event to select a cell
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = event.pos
-                    if 0 <= x < GRID_SIZE * CELL_SIZE and 0 <= y < GRID_SIZE * CELL_SIZE:
+                    if (
+                        0 <= x < GRID_SIZE * CELL_SIZE
+                        and 0 <= y < GRID_SIZE * CELL_SIZE
+                    ):
                         selected_col, selected_row = x // CELL_SIZE, y // CELL_SIZE
 
                 # Number key press event to input a number
@@ -332,7 +340,7 @@ def main():
                         selected_col = max(0, selected_col - 1)
                     elif event.key == pygame.K_RIGHT:
                         selected_col = min(GRID_SIZE - 1, selected_col + 1)
-        
+
                     # Number input handling
                     if event.key == pygame.K_1:
                         selected_value = 1
@@ -369,18 +377,18 @@ def main():
                         if show_solution:
                             board = copy.deepcopy(current_board)
                         else:
-                            board = copy.deepcopy(answer_board)  
-                            
+                            board = copy.deepcopy(answer_board)
+
                         # Toggle the show_solution flag
                         show_solution = not show_solution
-                        
+
                     # Delete the user-inputted number (using BACKSPACE)
                     if event.key == pygame.K_BACKSPACE:
                         # Only delete the number if the cell is not pre-filled
                         if initial_board[selected_row][selected_col] == 0:
                             board[selected_row][selected_col] = 0
                             current_board = copy.deepcopy(board)
-                        
+
                     # Reset the game if 'Enter' is pressed
                     if event.key == pygame.K_RETURN:
                         reset_game()
@@ -390,13 +398,14 @@ def main():
                         initial_board = copy.deepcopy(board)
                         current_board = copy.deepcopy(board)
                         selected_row, selected_col = 0, 0
-                        game_finished = False   
-                    
+                        game_finished = False
+
                     # Reset the board if 'r' is pressed
                     if event.key == pygame.K_r:
                         reset_board()
 
         clock.tick(30)  # Control the frame rate of the game
+
 
 if __name__ == "__main__":
     main()
